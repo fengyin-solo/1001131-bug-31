@@ -33,3 +33,44 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+.ok-text { color: #067647; }
+.warn-text { color: #b54708; }
+.muted { color: var(--muted); }
+
+/* 防汛预警级别配色：蓝/黄/橙/红，通知栏、徽标、风险标签共用同一口径 */
+.lv-blue { background: #e8f1ff; color: #175cd3; border-color: #b2ccff; }
+.lv-yellow { background: #fffaeb; color: #b54708; border-color: #fedf89; }
+.lv-orange { background: #fff4ed; color: #c4320a; border-color: #f9dbaf; }
+.lv-red { background: #fef3f2; color: #b42318; border-color: #fda29b; }
+
+.level-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid; font-size: 12px; white-space: nowrap; }
+.risk-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; border: 1px solid; font-size: 12px; }
+
+.app-head { flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.head-user { align-self: flex-end; }
+.notice-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.notice-title { font-size: 12px; font-weight: 600; color: #344054; }
+.notice-chip { display: inline-flex; gap: 8px; align-items: center; border: 1px solid; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.notice-level { font-weight: 700; }
+.notice-sections { color: #475467; }
+.notice-time { color: var(--muted); }
+.notice-more { font-size: 12px; }
+
+.detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.detail-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+.detail-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+.detail-card h3 { margin: 0 0 8px; font-size: 14px; }
+.info-list { margin: 0; }
+.info-list div { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 3px 0; border-bottom: 1px dashed #eef2f6; }
+.info-list dt { color: var(--muted); }
+.info-list dd { margin: 0; text-align: right; }
+.inner-table { margin-top: 8px; }
+.tag { display: inline-block; background: #f2f4f7; border-radius: 4px; padding: 1px 6px; margin: 1px 2px; font-size: 12px; }
+.migration-note { color: #b54708; font-size: 12px; margin: 8px 0 0; }
+.level-ramp { display: flex; align-items: center; gap: 6px; margin: 10px 0; flex-wrap: wrap; }
+.ramp-step { border: 1px solid; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+.ramp-step:disabled { opacity: .55; cursor: not-allowed; }
+.ramp-step.next { outline: 2px solid var(--brand); outline-offset: 1px; }
+.ramp-arrow { color: var(--muted); }
+.remark-box { max-width: 320px; }
+.filter-item select, .filter-item input { padding: 4px 8px; }

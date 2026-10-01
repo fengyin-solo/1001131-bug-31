@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers import ROUTERS
+from app.services.flood_watch import watch_service
 from app.store import store
 
 app = FastAPI(title="市政道路桥梁养护管理平台", version="1.0.0")
@@ -24,6 +25,12 @@ app.add_middleware(
 
 for module in ROUTERS:
     app.include_router(module.router)
+
+
+@app.on_event("startup")
+def bootstrap_flood_watch() -> None:
+    """启动时迁移存量跳级预警，并为在警事件对齐通知/排水任务/道路风险面。"""
+    watch_service.bootstrap()
 
 
 @app.get("/api/health")
