@@ -74,3 +74,28 @@ npm run dev
   `backend/app/routers/<模块>.py`，业务规则在 `backend/app/services/<模块>.py`。
 - 列表接口统一返回 `{ items, total, page, size }`，动作接口统一返回 `{ ok, message }`。
 - 状态流转只允许在 `app/services` 里改，路由层不做业务判断。
+
+## 防汛预警升级链路
+
+防汛值班员在「防汛应急」列表进入记录详情，按 **定位预警事件 → 核对影响路段 →
+发布升级** 三步推进，升级结果同时落到四个面：
+
+| 面 | 落点 | 说明 |
+| --- | --- | --- |
+| 防汛档案 | `flood` 记录的 `预警级别` / `version` / `history` | 历史阶梯按次留档（自动监测 / 指挥部命令 / 存量迁移） |
+| 通知栏 | `GET /api/flood/notices/active` | 一个事件一条，全局 `NoticeBar` 按生效级别变色 |
+| 排水任务 | `drainage` 行的 `预警级别` / `排水任务状态` | 仅展示投影，设施状态动作仍走排水模块 |
+| 道路风险面 | `road_section` 行的 `风险等级` / `风险面状态` | 多起事件覆盖同一路段取最高级；工作台在 `/risk-board` |
+
+规则（收口于 `backend/app/flood_domain.py`）：
+
+- 四级阶梯 `蓝色(Ⅳ) → 黄色(Ⅲ) → 橙色(Ⅱ) → 红色(Ⅰ)`，每次命令只允许推进相邻一级；
+- 指挥部最新命令覆盖自动监测建议，监测上报不改变命令生效级别；
+- `command_no` 幂等：重复点击/网络重试不产生第二档历史、第二条通知；
+- `version` 乐观锁：并发值守只推进一版，后到发布收到 `409`，刷新核对后再发；
+- 通知、任务、风险面与档案在同一事务（`store.transaction()` 快照）内提交，
+  任一步失败整体回滚，维持此前级别；
+- 存量跳级记录在服务启动时迁回相邻节点（如蓝→红校正为蓝→黄），并追加
+  “存量迁移”历史档留痕；
+- 相关接口：`POST /api/flood/{id}/upgrade`、`POST /api/flood/{id}/monitor`、
+  `GET /api/flood/{id}/history`、`GET /api/flood/risk-board`。

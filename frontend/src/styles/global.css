@@ -33,3 +33,47 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+
+/* 防汛通知栏：颜色即生效预警级别（命令覆盖监测后） */
+.notice-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 10px 0; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: #fff; font-size: 13px; }
+.notice-bar.notice-blue { background: #eff6ff; border-color: #93c5fd; }
+.notice-bar.notice-yellow { background: #fefce8; border-color: #facc15; }
+.notice-bar.notice-orange { background: #fff7ed; border-color: #fb923c; }
+.notice-bar.notice-red { background: #fef2f2; border-color: #ef4444; }
+.notice-main { display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1; min-width: 0; }
+.notice-roads { color: var(--muted); }
+.notice-meta { color: var(--muted); font-size: 12px; margin-left: auto; white-space: nowrap; }
+.notice-badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; color: #fff; background: #475569; white-space: nowrap; }
+.notice-blue .notice-badge { background: #2563eb; }
+.notice-yellow .notice-badge { background: #ca8a04; }
+.notice-orange .notice-badge { background: #ea580c; }
+.notice-red .notice-badge { background: #dc2626; }
+.notice-list { display: flex; gap: 6px; flex-wrap: wrap; }
+.notice-chip { padding: 2px 8px; border-radius: 999px; font-size: 12px; text-decoration: none; border: 1px solid currentColor; white-space: nowrap; }
+.notice-chip.notice-blue { color: #2563eb; }
+.notice-chip.notice-yellow { color: #a16207; }
+.notice-chip.notice-orange { color: #ea580c; }
+.notice-chip.notice-red { color: #dc2626; }
+
+.level-tag { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 12px; }
+.level-tag.notice-blue { background: #dbeafe; color: #1d4ed8; }
+.level-tag.notice-yellow { background: #fef9c3; color: #a16207; }
+.level-tag.notice-orange { background: #ffedd5; color: #c2410c; }
+.level-tag.notice-red { background: #fee2e2; color: #b91c1c; }
+.level-tag.level-idle { background: #f1f5f9; color: #64748b; }
+
+.wizard { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+.wizard-steps { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; font-size: 13px; }
+.wizard-step { padding: 4px 10px; border-radius: 999px; background: #f1f5f9; color: #64748b; }
+.wizard-step.active { background: var(--brand); color: #fff; }
+.wizard-arrow { color: var(--muted); }
+.wizard-body { display: flex; flex-direction: column; gap: 10px; }
+.wizard-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.road-check { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; }
+.road-check.checked { border-color: var(--brand); background: #eff6ff; }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 12px; border-left: 2px solid var(--border); }
+.timeline-item { position: relative; padding: 0 0 14px 14px; font-size: 13px; }
+.timeline-item::before { content: ''; position: absolute; left: -19px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); }
+.timeline-item.source-自动监测::before { background: #64748b; }
+.timeline-item.source-存量迁移::before { background: #7c3aed; }
+.timeline-meta { color: var(--muted); font-size: 12px; }

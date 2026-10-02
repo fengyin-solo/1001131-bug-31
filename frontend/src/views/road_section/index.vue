@@ -31,12 +31,21 @@
       <thead>
         <tr>
           <th v-for="column in columns" :key="column">{{ column }}</th>
+          <th>风险等级</th>
+          <th>风险面状态</th>
+          <th>关联防汛记录</th>
           <th>可执行动作</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="row in rows" :key="String(row.id)">
           <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
+          <td>
+            <span v-if="row['风险等级'] && row['风险等级'] !== '无'" class="level-tag" :class="levelClass(String(row['风险等级']))">{{ row['风险等级'] }}</span>
+            <span v-else class="level-tag level-idle">无</span>
+          </td>
+          <td>{{ row['风险面状态'] ?? '常态通行' }}</td>
+          <td>{{ row['关联防汛记录'] || '—' }}</td>
           <td class="row-actions">
             <button
               v-for="action in actions"
@@ -50,7 +59,7 @@
           </td>
         </tr>
         <tr v-if="!rows.length">
-          <td :colspan="columns.length + 1" class="empty-state">暂无路段管理数据，可先登记管养路段</td>
+          <td :colspan="columns.length + 4" class="empty-state">暂无路段管理数据，可先登记管养路段</td>
         </tr>
       </tbody>
     </table>
@@ -66,6 +75,7 @@
 import { onMounted, ref } from 'vue'
 
 import { request } from '@/api/client'
+import { levelClass } from '@/stores/notice'
 
 type Row = Record<string, string | number | null>
 
@@ -99,7 +109,7 @@ async function runAction(action: string, row: Row) {
   try {
     const response = await request(`${ENDPOINT}/${row.id}/actions`, {
       method: 'POST',
-      body: JSON.stringify({ action }),
+      body: JSON.stringify({ values: { action } }),
     })
     if (!response.ok) {
       throw new Error('路段管理动作未生效，请稍后重试')

@@ -31,12 +31,26 @@
       <thead>
         <tr>
           <th v-for="column in columns" :key="column">{{ column }}</th>
+          <th>预警级别</th>
+          <th>排水任务状态</th>
           <th>可执行动作</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="row in rows" :key="String(row.id)">
-          <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
+          <td>{{ row['设施编号'] ?? '—' }}</td>
+          <td>{{ row['设施类型'] ?? '—' }}</td>
+          <td>{{ row['所属路段'] ?? '—' }}</td>
+          <td>{{ row['桩号位置'] ?? '—' }}</td>
+          <td>{{ row['清理日期'] ?? '—' }}</td>
+          <td>{{ row['淤积程度'] ?? '—' }}</td>
+          <td>{{ row['管养班组'] ?? '—' }}</td>
+          <td>{{ row['设施状态'] ?? '—' }}</td>
+          <td>
+            <span v-if="row['预警级别']" class="level-tag" :class="levelClass(String(row['预警级别']))">{{ row['预警级别'] }}</span>
+            <span v-else class="level-tag level-idle">无预警</span>
+          </td>
+          <td>{{ row['排水任务状态'] ?? '无排水任务' }}</td>
           <td class="row-actions">
             <button
               v-for="action in actions"
@@ -50,7 +64,7 @@
           </td>
         </tr>
         <tr v-if="!rows.length">
-          <td :colspan="columns.length + 1" class="empty-state">暂无排水设施数据，可先登记排水设施</td>
+          <td :colspan="columns.length + 3" class="empty-state">暂无排水设施数据，可先登记排水设施</td>
         </tr>
       </tbody>
     </table>
@@ -66,6 +80,7 @@
 import { onMounted, ref } from 'vue'
 
 import { request } from '@/api/client'
+import { levelClass } from '@/stores/notice'
 
 type Row = Record<string, string | number | null>
 
@@ -99,7 +114,7 @@ async function runAction(action: string, row: Row) {
   try {
     const response = await request(`${ENDPOINT}/${row.id}/actions`, {
       method: 'POST',
-      body: JSON.stringify({ action }),
+      body: JSON.stringify({ values: { action } }),
     })
     if (!response.ok) {
       throw new Error('排水设施动作未生效，请稍后重试')
